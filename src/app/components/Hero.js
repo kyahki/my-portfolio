@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { FaLinkedin, FaFacebook } from "react-icons/fa";
 import { SiGithub } from "react-icons/si";
 
@@ -112,10 +113,13 @@ export default function Hero() {
                 repeatType: "reverse",
               }}
             />
-            <img
+            <Image
               src="/images/myImage.jpg"
               alt="Kyle Vasquez"
               className="w-full h-full object-cover"
+              width={256}
+              height={320}
+              priority
             />
           </motion.div>
 
@@ -130,14 +134,14 @@ export default function Hero() {
               className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-400"
               variants={itemVariants}
             >
-              Hi, I'm Kyle Vasquez
+              Hi, I&apos;m Kyle Vasquez
             </motion.h1>
 
             <motion.p
               className="text-lg mb-8 text-gray-300 leading-relaxed"
               variants={itemVariants}
             >
-              I'm a software developer skilled in Java, JavaScript, Python, PHP,
+              I&apos;m a software developer skilled in Java, JavaScript, Python, PHP,
               C, and C++, with experience in MySQL, MongoDB, Git, GitHub, React,
               and backend frameworks like Express, Django, and Node.js. I love
               building efficient, user-friendly web applications.
