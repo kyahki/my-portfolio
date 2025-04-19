@@ -19,7 +19,7 @@ const projects = [
     description:
       "A fitness tracking web app that helps users log workouts, monitor progress, and stay consistent. Features include authentication, personalized dashboards, and workout history.",
     link: "https://github.com/kyahki/FitHub",
-    imageUrl: "/images/FitHub.png",
+    imageUrl: "/images/Fithub.png",
     technologies: ["MERN Stack", "Tailwind CSS", "JWT", "Framer Motion"],
   },
   {

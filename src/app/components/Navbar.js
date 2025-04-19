@@ -30,7 +30,7 @@ export default function Navbar() {
         });
       },
       { 
-        threshold: 0.2, // Trigger when 20% of the section is visible
+        threshold: [0.2, 0.5, 0.8], // Multiple thresholds for better accuracy
         rootMargin: "-80px 0px -20% 0px" // Adjust the top and bottom margins
       }
     );
@@ -45,7 +45,7 @@ export default function Navbar() {
         });
       },
       { 
-        threshold: 0.1, // More sensitive threshold for contact section
+        threshold: [0.1, 0.3, 0.5], // Multiple thresholds for better accuracy
         rootMargin: "-80px 0px -10% 0px" // More lenient margins
       }
     );
