@@ -15,6 +15,22 @@ const projects = [
     technologies: ["HTML/CSS", "JavaScript", "Django", "Python", "SQLite"],
   },
   {
+    title: "FitHub",
+    description:
+      "A fitness tracking web app that helps users log workouts, monitor progress, and stay consistent. Features include authentication, personalized dashboards, and workout history.",
+    link: "https://github.com/kyahki/FitHub",
+    imageUrl: "/images/FitHub.png",
+    technologies: ["MERN Stack", "Tailwind CSS", "JWT", "Framer Motion"],
+  },
+  {
+    title: "Exiled",
+    description:
+      "A Top-down Shooter Game inspired by Brotato. Survive waves of enemies and level up your character to face new challenges",
+    link: "https://github.com/kyahki/exiled-oop-project",
+    imageUrl: "/images/Exiled.png",
+    technologies: ["Java", "LibGDX", "MySQL"],
+  },
+  {
     title: "OnlyFit",
     description:
       "A fitness gym app cater to users who want to focus on their health and wellness. Users can manage their workout routines, track their progress, and reach their goals and objectives.",
@@ -29,14 +45,6 @@ const projects = [
     link: "https://github.com/kyahki/2D-Adventure-Game",
     imageUrl: "/images/2D-Adventure.png",
     technologies: ["Java", "LibGDX", "Box2D", "Tiled"],
-  },
-  {
-    title: "Exiled",
-    description:
-      "A Top-down Shooter Game inspired by Brotato. Survive waves of enemies and level up your character to face new challenges",
-    link: "https://github.com/kyahki/exiled-oop-project",
-    imageUrl: "/images/Exiled.png",
-    technologies: ["Java", "LibGDX", "MySQL"],
   },
 ];
 
