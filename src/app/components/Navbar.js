@@ -1,108 +1,88 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
-import { FaHome, FaLaptopCode, FaBrain, FaEnvelope } from "react-icons/fa";
+import { FaLaptopCode, FaBrain, FaEnvelope } from "react-icons/fa";
 import { HiAcademicCap } from "react-icons/hi2";
 
 export default function Navbar() {
   const [activeSection, setActiveSection] = useState("hero");
   const [scrolled, setScrolled] = useState(false);
-  
-  // Track which section is currently in view using IntersectionObserver
+
+  // Scroll spy: marker line just below the nav; active = last section (DOM order) whose top is at/above it.
+  // Replaces dual IntersectionObservers + "at bottom" hack, which kept forcing Contact while Projects was on screen when scrolling up.
   useEffect(() => {
-    const handleScroll = () => {
-      // Determine if page has scrolled to add background
-      if (window.scrollY > 20) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+    const navOffset = 80;
+    const markerOffset = 56;
+    const sectionIds = ["hero", "skills", "projects", "contact"];
+
+    const maxScrollY = () => {
+      const root = document.documentElement;
+      const scrollHeight = Math.max(
+        document.body?.scrollHeight ?? 0,
+        root.scrollHeight,
+      );
+      const viewHeight = root.clientHeight;
+      return Math.max(0, scrollHeight - viewHeight);
     };
-    
-    // Create IntersectionObserver to handle section visibility
-    const sectionObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        });
-      },
-      { 
-        threshold: [0.2, 0.5, 0.8], // Multiple thresholds for better accuracy
-        rootMargin: "-80px 0px -20% 0px" // Adjust the top and bottom margins
-      }
-    );
-    
-    // Special observer for contact section with more lenient threshold
-    const contactObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection("contact");
-          }
-        });
-      },
-      { 
-        threshold: [0.1, 0.3, 0.5], // Multiple thresholds for better accuracy
-        rootMargin: "-80px 0px -10% 0px" // More lenient margins
-      }
-    );
-    
-    // Get all sections and observe them
-    const sections = ["hero", "projects", "skills", "contact"];
-    sections.forEach((section) => {
-      const element = document.getElementById(section);
-      if (element) {
-        if (section === "contact") {
-          contactObserver.observe(element);
-        } else {
-          sectionObserver.observe(element);
+
+    const isAtPageBottom = () => {
+      const slack = 64; // px — mobile chrome / subpixel so “bottom” reliably counts
+      return window.scrollY >= maxScrollY() - slack;
+    };
+
+    const updateFromScroll = () => {
+      setScrolled(window.scrollY > 20);
+
+      let current = "hero";
+
+      if (isAtPageBottom()) {
+        current = "contact";
+        if (window.location.hash !== "#contact") {
+          window.history.replaceState(null, "", "#contact");
         }
       } else {
-        console.warn(`Section with id "${section}" not found in the DOM`);
+        if (window.location.hash === "#contact") {
+          const path = `${window.location.pathname}${window.location.search}`;
+          window.history.replaceState(null, "", path || "/");
+        }
+        const markerY = window.scrollY + navOffset + markerOffset;
+        for (const id of sectionIds) {
+          const el = document.getElementById(id);
+          if (!el) continue;
+          const top = el.getBoundingClientRect().top + window.scrollY;
+          if (top <= markerY) {
+            current = id;
+          }
+        }
       }
-    });
-    
-    // Check if we're at the bottom of the page
-    const handleScrollBottom = () => {
-      const isAtBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 50;
-      if (isAtBottom) {
-        setActiveSection("contact");
-      }
+
+      setActiveSection(current);
     };
-    
-    window.addEventListener("scroll", handleScroll);
-    window.addEventListener("scroll", handleScrollBottom);
-    
-    // Run handleScroll once to set initial state
-    handleScroll();
-    
+
+    updateFromScroll();
+    window.addEventListener("scroll", updateFromScroll, { passive: true });
+    window.addEventListener("resize", updateFromScroll);
+
     return () => {
-      // Clean up observers when component unmounts
-      sections.forEach((section) => {
-        const element = document.getElementById(section);
-        if (element) {
-          if (section === "contact") {
-            contactObserver.unobserve(element);
-          } else {
-            sectionObserver.unobserve(element);
-          }
-        }
-      });
-      
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("scroll", handleScrollBottom);
+      window.removeEventListener("scroll", updateFromScroll);
+      window.removeEventListener("resize", updateFromScroll);
     };
   }, []);
 
   // Navigation items
   const navItems = [
     { id: "hero", label: "About me", icon: <HiAcademicCap className="mr-1" /> },
-    { id: "skills", label: "Technical Skills", icon: <FaBrain className="mr-1" /> },
-    { id: "projects", label: "Projects", icon: <FaLaptopCode className="mr-1" /> },
-    { id: "contact", label: "Contact", icon: <FaEnvelope className="mr-1" /> }
+    {
+      id: "skills",
+      label: "Technical Skills",
+      icon: <FaBrain className="mr-1" />,
+    },
+    {
+      id: "projects",
+      label: "Projects",
+      icon: <FaLaptopCode className="mr-1" />,
+    },
+    { id: "contact", label: "Contact", icon: <FaEnvelope className="mr-1" /> },
   ];
 
   // Scroll to section function
@@ -110,16 +90,21 @@ export default function Navbar() {
     const section = document.getElementById(sectionId);
     if (section) {
       // Offset for navbar height
-      const yOffset = -80; 
-      const y = section.getBoundingClientRect().top + window.pageYOffset + yOffset;
-      window.scrollTo({ top: y, behavior: 'smooth' });
+      const yOffset = -80;
+      const y =
+        section.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: "smooth" });
     }
   };
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      scrolled ? 'bg-gray-900/90 backdrop-blur-sm shadow-lg' : 'bg-transparent'
-    }`}>
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-gray-900/90 backdrop-blur-sm shadow-lg"
+          : "bg-transparent"
+      }`}
+    >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-center h-16">
           <div className="flex items-center justify-center">
@@ -134,9 +119,9 @@ export default function Navbar() {
                       scrollToSection(item.id);
                     }}
                     className={`flex items-center px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                      activeSection === item.id 
-                        ? 'text-white bg-blue-600' 
-                        : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                      activeSection === item.id
+                        ? "text-white bg-blue-600"
+                        : "text-gray-300 hover:bg-gray-700 hover:text-white"
                     }`}
                   >
                     <span className="mr-1">{item.icon}</span>
@@ -146,7 +131,7 @@ export default function Navbar() {
               </div>
             </div>
           </div>
-          
+
           {/* Mobile menu */}
           <div className="md:hidden flex items-center justify-center w-full">
             <div className="flex items-center space-x-4">
@@ -159,9 +144,9 @@ export default function Navbar() {
                     scrollToSection(item.id);
                   }}
                   className={`flex flex-col items-center justify-center text-center px-2 py-1 rounded-md text-xs font-medium transition-colors duration-200 ${
-                    activeSection === item.id 
-                      ? 'text-white bg-blue-600' 
-                      : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                    activeSection === item.id
+                      ? "text-white bg-blue-600"
+                      : "text-gray-300 hover:bg-gray-700 hover:text-white"
                   }`}
                   aria-label={item.label}
                 >

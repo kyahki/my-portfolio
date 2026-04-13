@@ -42,14 +42,11 @@ export default function Footer() {
   ];
 
   return (
-    <footer
-      id="contact"
-      className="bg-gray-900 text-white py-12 border-t border-gray-800 relative overflow-hidden"
-    >
+    <footer className="bg-gray-900 text-white py-12 border-t border-gray-800 relative overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,rgba(37,99,235,0.1),transparent_80%)]" />
 
       <div className="container mx-auto px-4 relative z-10">
-        <div id="contact" className="max-w-5xl mx-auto mb-12">
+        <div className="max-w-5xl mx-auto mb-12">
           <AnimatedSection className="text-center mb-10">
             <h2 className="text-3xl font-bold inline-block relative">
               CONTACT

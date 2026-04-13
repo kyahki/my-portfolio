@@ -6,6 +6,55 @@ import Image from "next/image";
 import { FaLinkedin, FaFacebook } from "react-icons/fa";
 import { SiGithub } from "react-icons/si";
 
+/** Fixed blob layout — random per-render would mismatch SSR vs client (hydration error). */
+const HERO_BLOBS = [
+  {
+    width: 220,
+    height: 160,
+    left: 8,
+    top: 12,
+    x: [0, -32],
+    y: [0, 28],
+    duration: 22,
+  },
+  {
+    width: 180,
+    height: 280,
+    left: 72,
+    top: 6,
+    x: [0, 40],
+    y: [0, -22],
+    duration: 18,
+  },
+  {
+    width: 300,
+    height: 200,
+    left: 45,
+    top: 55,
+    x: [0, -24],
+    y: [0, -36],
+    duration: 26,
+  },
+  {
+    width: 140,
+    height: 240,
+    left: 2,
+    top: 70,
+    x: [0, 28],
+    y: [0, 20],
+    duration: 20,
+  },
+  {
+    width: 200,
+    height: 120,
+    left: 88,
+    top: 78,
+    x: [0, -18],
+    y: [0, -30],
+    duration: 24,
+  },
+];
+
 export default function Hero() {
   // Animation variants for staggered animations
   const containerVariants = {
@@ -60,22 +109,19 @@ export default function Hero() {
     >
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
-        {[...Array(5)].map((_, i) => (
+        {HERO_BLOBS.map((blob, i) => (
           <motion.div
             key={i}
             className="absolute rounded-full bg-blue-500/10"
             style={{
-              width: `${Math.random() * 300 + 50}px`,
-              height: `${Math.random() * 300 + 50}px`,
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
+              width: `${blob.width}px`,
+              height: `${blob.height}px`,
+              left: `${blob.left}%`,
+              top: `${blob.top}%`,
             }}
-            animate={{
-              x: [0, Math.random() * 100 - 50],
-              y: [0, Math.random() * 100 - 50],
-            }}
+            animate={{ x: blob.x, y: blob.y }}
             transition={{
-              duration: Math.random() * 20 + 10,
+              duration: blob.duration,
               repeat: Number.POSITIVE_INFINITY,
               repeatType: "reverse",
               ease: "easeInOut",
@@ -141,10 +187,10 @@ export default function Hero() {
               className="text-lg mb-8 text-gray-300 leading-relaxed"
               variants={itemVariants}
             >
-              I&apos;m a software developer skilled in Java, JavaScript, Python, PHP,
-              C, and C++, with experience in MySQL, MongoDB, Git, GitHub, React,
-              and backend frameworks like Express, Django, and Node.js. I love
-              building efficient, user-friendly web applications.
+              I&apos;m a software developer skilled in Java, JavaScript, Python,
+              PHP, C, and C++, with experience in MySQL, MongoDB, Git, GitHub,
+              React, and backend frameworks like Express, Django, and Node.js. I
+              love building efficient, user-friendly web applications.
             </motion.p>
 
             <motion.div

@@ -7,6 +7,21 @@ import AnimatedSection from "../../../AnimationSection";
 
 const projects = [
   {
+    title: "TreeTrace",
+    description:
+      "A modern, AI-powered family tree platform that helps you build, visualize, and preserve your family heritage while tracking health patterns across generations.",
+    link: "https://github.com/kyahki/TreeTrace",
+    imageUrl: "/images/TreeTrace.png",
+    technologies: [
+      "Next.js",
+      "NestJS",
+      "TypeScript",
+      "MongoDB",
+      "Tailwind CSS",
+      "shadcn/ui",
+    ],
+  },
+  {
     title: "Paws For Home",
     description:
       "Paws For Home is a pet adoption platform that connects shelters and adopters in a simple, user-friendly way. Users can create either an Adopter or Shelter Account.",
